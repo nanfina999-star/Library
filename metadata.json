@@ -1,0 +1,6 @@
+{
+  "name": "បណ្ដុំឯកសារមេរៀន",
+  "description": "កម្មវិធីរក្សាទុក និងអានឯកសារមេរៀន (PDF, រូបភាព, កំណត់ត្រា) ដោយផ្ទាល់នៅក្នុងកម្មវិធីសម្រាប់សិក្សាគ្រប់ពេលវេលា",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

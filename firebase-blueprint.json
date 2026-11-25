@@ -1,0 +1,367 @@
+{
+  "entities": {
+    "UserAccount": {
+      "title": "UserAccount",
+      "description": "Student account profile with salted passcode verifier owned strictly by the authenticated user.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the account owner."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Student name displayed in study chat."
+        },
+        "gradeLevel": {
+          "type": "string",
+          "description": "Student grade or class level (e.g. ថ្នាក់ទី ១២)."
+        },
+        "passcodeHash": {
+          "type": "string",
+          "description": "PBKDF2-HMAC-SHA256 hex hash of the user passcode."
+        },
+        "passcodeSalt": {
+          "type": "string",
+          "description": "Random 16-byte hex salt used to hash the user passcode."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp written via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server update timestamp written via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": [
+        "userId",
+        "displayName",
+        "gradeLevel",
+        "passcodeHash",
+        "passcodeSalt",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "StudentProfile": {
+      "title": "StudentProfile",
+      "description": "Non-sensitive student directory card visible to signed-in peers for adding friends and direct lesson chat.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the student."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Student name."
+        },
+        "gradeLevel": {
+          "type": "string",
+          "description": "Student grade level."
+        },
+        "studentCode": {
+          "type": "string",
+          "description": "Short uppercase identifier code derived from userId for easy friend lookup."
+        },
+        "visibility": {
+          "type": "string",
+          "enum": [
+            "students"
+          ],
+          "description": "Directory visibility scope for signed-in students."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "userId",
+        "displayName",
+        "gradeLevel",
+        "studentCode",
+        "visibility",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "FriendConnection": {
+      "title": "FriendConnection",
+      "description": "Canonical friend request and accepted mutual friendship between two students.",
+      "type": "object",
+      "properties": {
+        "participantIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Sorted pair [minUid, maxUid] of the two students."
+        },
+        "requesterId": {
+          "type": "string"
+        },
+        "requesterName": {
+          "type": "string"
+        },
+        "requesterGrade": {
+          "type": "string"
+        },
+        "recipientId": {
+          "type": "string"
+        },
+        "recipientName": {
+          "type": "string"
+        },
+        "recipientGrade": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "accepted",
+            "declined"
+          ]
+        },
+        "lastMessageText": {
+          "type": "string"
+        },
+        "lastSenderName": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "participantIds",
+        "requesterId",
+        "requesterName",
+        "requesterGrade",
+        "recipientId",
+        "recipientName",
+        "recipientGrade",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "DirectLessonMessage": {
+      "title": "DirectLessonMessage",
+      "description": "Private 1-on-1 direct message between accepted student friends with optional attached lesson document.",
+      "type": "object",
+      "properties": {
+        "connectionId": {
+          "type": "string"
+        },
+        "participantIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "senderId": {
+          "type": "string"
+        },
+        "senderName": {
+          "type": "string"
+        },
+        "senderGrade": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "attachedLessonTitle": {
+          "type": "string"
+        },
+        "attachedLessonType": {
+          "type": "string"
+        },
+        "attachedLessonSubject": {
+          "type": "string"
+        },
+        "attachedLessonNote": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "connectionId",
+        "participantIds",
+        "senderId",
+        "senderName",
+        "senderGrade",
+        "text",
+        "createdAt"
+      ]
+    },
+    "StudyRoom": {
+      "title": "StudyRoom",
+      "description": "Shared study discussion room where students ask questions about lessons and documents.",
+      "type": "object",
+      "properties": {
+        "creatorId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the user who created the room."
+        },
+        "name": {
+          "type": "string",
+          "description": "Title of the study discussion room."
+        },
+        "description": {
+          "type": "string",
+          "description": "Short topic description."
+        },
+        "subjectTag": {
+          "type": "string",
+          "description": "Subject or category label for the room."
+        },
+        "visibility": {
+          "type": "string",
+          "enum": [
+            "shared"
+          ],
+          "description": "Visibility scope required for shared study chat queries."
+        },
+        "lastMessageText": {
+          "type": "string",
+          "description": "Preview of the latest message posted in the room."
+        },
+        "lastSenderName": {
+          "type": "string",
+          "description": "Display name of the latest sender."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp written via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server update timestamp written via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": [
+        "creatorId",
+        "name",
+        "description",
+        "subjectTag",
+        "visibility",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Message posted in a study room, optionally referencing a lesson document.",
+      "type": "object",
+      "properties": {
+        "roomId": {
+          "type": "string",
+          "description": "Parent StudyRoom document ID."
+        },
+        "senderId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the message author."
+        },
+        "senderName": {
+          "type": "string",
+          "description": "Student display name at send time."
+        },
+        "senderGrade": {
+          "type": "string",
+          "description": "Student grade level at send time."
+        },
+        "text": {
+          "type": "string",
+          "description": "Chat message text or lesson question."
+        },
+        "attachedLessonTitle": {
+          "type": "string",
+          "description": "Optional referenced lesson document title."
+        },
+        "attachedLessonType": {
+          "type": "string",
+          "description": "Optional referenced lesson type (PDF, IMAGE, NOTE, DOCUMENT)."
+        },
+        "attachedLessonSubject": {
+          "type": "string",
+          "description": "Optional referenced lesson subject name."
+        },
+        "attachedLessonNote": {
+          "type": "string",
+          "description": "Optional excerpt or study note from the referenced lesson."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp written via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": [
+        "roomId",
+        "senderId",
+        "senderName",
+        "senderGrade",
+        "text",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserAccount"
+      },
+      "description": "Private per-user student account document storing name, grade level, and salted passcode hash."
+    },
+    "/studentDirectory/{userId}": {
+      "schema": {
+        "$ref": "#/entities/StudentProfile"
+      },
+      "description": "Public-to-signed-in-students profile directory for discovering peers and sending friend requests."
+    },
+    "/friendConnections/{pairId}": {
+      "schema": {
+        "$ref": "#/entities/FriendConnection"
+      },
+      "description": "Mutual friend connections and pending/accepted/declined friend requests keyed by sorted pairId."
+    },
+    "/friendConnections/{pairId}/messages/{messageId}": {
+      "schema": {
+        "$ref": "#/entities/DirectLessonMessage"
+      },
+      "description": "Private 1-on-1 lesson discussion messages between accepted friends."
+    },
+    "/studyRooms/{roomId}": {
+      "schema": {
+        "$ref": "#/entities/StudyRoom"
+      },
+      "description": "Shared study chat rooms for discussing lessons and documents."
+    },
+    "/studyRooms/{roomId}/messages/{messageId}": {
+      "schema": {
+        "$ref": "#/entities/ChatMessage"
+      },
+      "description": "Study chat messages within a room, with optional attached lesson document references."
+    }
+  }
+}

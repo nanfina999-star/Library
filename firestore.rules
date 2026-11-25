@@ -1,0 +1,325 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidPairId(id) {
+      return id is string && id.size() >= 3 && id.size() <= 260 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidUserAccount(data) {
+      return data.userId is string &&
+             data.userId.size() >= 1 && data.userId.size() <= 128 &&
+             data.displayName is string &&
+             data.displayName.size() >= 2 && data.displayName.size() <= 40 &&
+             data.gradeLevel is string &&
+             data.gradeLevel.size() >= 1 && data.gradeLevel.size() <= 30 &&
+             data.passcodeHash is string &&
+             data.passcodeHash.size() >= 32 && data.passcodeHash.size() <= 128 &&
+             data.passcodeSalt is string &&
+             data.passcodeSalt.size() >= 16 && data.passcodeSalt.size() <= 64 &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time &&
+             data.updatedAt is timestamp &&
+             data.updatedAt <= request.time;
+    }
+
+    function isValidStudentProfile(data) {
+      return data.userId is string &&
+             isValidId(data.userId) &&
+             data.displayName is string &&
+             data.displayName.size() >= 2 && data.displayName.size() <= 40 &&
+             data.gradeLevel is string &&
+             data.gradeLevel.size() >= 1 && data.gradeLevel.size() <= 30 &&
+             data.studentCode is string &&
+             data.studentCode.size() >= 4 && data.studentCode.size() <= 12 &&
+             data.visibility == 'students' &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time &&
+             data.updatedAt is timestamp &&
+             data.updatedAt <= request.time;
+    }
+
+    function isValidParticipantPair(pairId, participantIds) {
+      return participantIds is list &&
+             participantIds.size() == 2 &&
+             isValidId(participantIds[0]) &&
+             isValidId(participantIds[1]) &&
+             participantIds[0] < participantIds[1] &&
+             pairId == participantIds[0] + '_' + participantIds[1];
+    }
+
+    function isValidFriendConnection(pairId, data) {
+      return isValidParticipantPair(pairId, data.participantIds) &&
+             data.requesterId is string &&
+             data.recipientId is string &&
+             data.requesterId != data.recipientId &&
+             data.requesterId in data.participantIds &&
+             data.recipientId in data.participantIds &&
+             data.requesterName is string &&
+             data.requesterName.size() >= 2 && data.requesterName.size() <= 40 &&
+             data.requesterGrade is string &&
+             data.requesterGrade.size() >= 1 && data.requesterGrade.size() <= 30 &&
+             data.recipientName is string &&
+             data.recipientName.size() >= 2 && data.recipientName.size() <= 40 &&
+             data.recipientGrade is string &&
+             data.recipientGrade.size() >= 1 && data.recipientGrade.size() <= 30 &&
+             data.status in ['pending', 'accepted', 'declined'] &&
+             (!('lastMessageText' in data) || (data.lastMessageText is string && data.lastMessageText.size() <= 200)) &&
+             (!('lastSenderName' in data) || (data.lastSenderName is string && data.lastSenderName.size() <= 40)) &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time &&
+             data.updatedAt is timestamp &&
+             data.updatedAt <= request.time;
+    }
+
+    function isValidDirectMessage(pairId, data) {
+      return data.connectionId is string &&
+             data.connectionId == pairId &&
+             isValidParticipantPair(pairId, data.participantIds) &&
+             data.senderId is string &&
+             data.senderId in data.participantIds &&
+             data.senderName is string &&
+             data.senderName.size() >= 2 && data.senderName.size() <= 40 &&
+             data.senderGrade is string &&
+             data.senderGrade.size() >= 1 && data.senderGrade.size() <= 30 &&
+             data.text is string &&
+             data.text.size() >= 1 && data.text.size() <= 1000 &&
+             (!('attachedLessonTitle' in data) || (data.attachedLessonTitle is string && data.attachedLessonTitle.size() >= 1 && data.attachedLessonTitle.size() <= 120)) &&
+             (!('attachedLessonType' in data) || (data.attachedLessonType is string && data.attachedLessonType.size() >= 1 && data.attachedLessonType.size() <= 20)) &&
+             (!('attachedLessonSubject' in data) || (data.attachedLessonSubject is string && data.attachedLessonSubject.size() >= 1 && data.attachedLessonSubject.size() <= 40)) &&
+             (!('attachedLessonNote' in data) || (data.attachedLessonNote is string && data.attachedLessonNote.size() <= 500)) &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time;
+    }
+
+    function isValidStudyRoom(data) {
+      return data.creatorId is string &&
+             data.creatorId.size() >= 1 && data.creatorId.size() <= 128 &&
+             data.name is string &&
+             data.name.size() >= 2 && data.name.size() <= 60 &&
+             data.description is string &&
+             data.description.size() <= 160 &&
+             data.subjectTag is string &&
+             data.subjectTag.size() >= 1 && data.subjectTag.size() <= 30 &&
+             data.visibility == 'shared' &&
+             (!('lastMessageText' in data) || (data.lastMessageText is string && data.lastMessageText.size() <= 200)) &&
+             (!('lastSenderName' in data) || (data.lastSenderName is string && data.lastSenderName.size() <= 40)) &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time &&
+             data.updatedAt is timestamp &&
+             data.updatedAt <= request.time;
+    }
+
+    function isValidChatMessage(data) {
+      return data.roomId is string &&
+             isValidId(data.roomId) &&
+             data.senderId is string &&
+             data.senderId.size() >= 1 && data.senderId.size() <= 128 &&
+             data.senderName is string &&
+             data.senderName.size() >= 2 && data.senderName.size() <= 40 &&
+             data.senderGrade is string &&
+             data.senderGrade.size() >= 1 && data.senderGrade.size() <= 30 &&
+             data.text is string &&
+             data.text.size() >= 1 && data.text.size() <= 1000 &&
+             (!('attachedLessonTitle' in data) || (data.attachedLessonTitle is string && data.attachedLessonTitle.size() >= 1 && data.attachedLessonTitle.size() <= 120)) &&
+             (!('attachedLessonType' in data) || (data.attachedLessonType is string && data.attachedLessonType.size() >= 1 && data.attachedLessonType.size() <= 20)) &&
+             (!('attachedLessonSubject' in data) || (data.attachedLessonSubject is string && data.attachedLessonSubject.size() >= 1 && data.attachedLessonSubject.size() <= 40)) &&
+             (!('attachedLessonNote' in data) || (data.attachedLessonNote is string && data.attachedLessonNote.size() <= 500)) &&
+             data.createdAt is timestamp &&
+             data.createdAt <= request.time;
+    }
+
+    match /users/{userId} {
+      allow get, list: if isSignedIn() && request.auth.uid == userId;
+
+      allow create: if isSignedIn() &&
+                       isValidId(userId) &&
+                       request.auth.uid == userId &&
+                       incoming().userId == request.auth.uid &&
+                       incoming().keys().hasAll(['userId', 'displayName', 'gradeLevel', 'passcodeHash', 'passcodeSalt', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['userId', 'displayName', 'gradeLevel', 'passcodeHash', 'passcodeSalt', 'createdAt', 'updatedAt']) &&
+                       isValidUserAccount(incoming());
+
+      allow update: if isSignedIn() &&
+                       isValidId(userId) &&
+                       request.auth.uid == userId &&
+                       isValidUserAccount(incoming()) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'gradeLevel', 'passcodeHash', 'passcodeSalt', 'updatedAt']);
+
+      allow delete: if isSignedIn() && isValidId(userId) && request.auth.uid == userId;
+    }
+
+    match /studentDirectory/{userId} {
+      allow get: if isSignedIn() && isValidId(userId) && existing().visibility == 'students';
+      allow list: if isSignedIn() && existing().visibility == 'students';
+
+      allow create: if isSignedIn() &&
+                       isValidId(userId) &&
+                       request.auth.uid == userId &&
+                       incoming().userId == request.auth.uid &&
+                       incoming().keys().hasAll(['userId', 'displayName', 'gradeLevel', 'studentCode', 'visibility', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['userId', 'displayName', 'gradeLevel', 'studentCode', 'visibility', 'createdAt', 'updatedAt']) &&
+                       isValidStudentProfile(incoming());
+
+      allow update: if isSignedIn() &&
+                       isValidId(userId) &&
+                       request.auth.uid == userId &&
+                       isValidStudentProfile(incoming()) &&
+                       incoming().userId == existing().userId &&
+                       incoming().studentCode == existing().studentCode &&
+                       incoming().visibility == existing().visibility &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'gradeLevel', 'updatedAt']);
+
+      allow delete: if isSignedIn() && isValidId(userId) && request.auth.uid == userId;
+    }
+
+    match /friendConnections/{pairId} {
+      allow get: if isSignedIn() && isValidPairId(pairId) && request.auth.uid in existing().participantIds;
+      allow list: if isSignedIn() && request.auth.uid in existing().participantIds;
+
+      allow create: if isSignedIn() &&
+                       isValidPairId(pairId) &&
+                       incoming().status == 'pending' &&
+                       incoming().requesterId == request.auth.uid &&
+                       incoming().keys().hasAll(['participantIds', 'requesterId', 'requesterName', 'requesterGrade', 'recipientId', 'recipientName', 'recipientGrade', 'status', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['participantIds', 'requesterId', 'requesterName', 'requesterGrade', 'recipientId', 'recipientName', 'recipientGrade', 'status', 'createdAt', 'updatedAt']) &&
+                       isValidFriendConnection(pairId, incoming());
+
+      allow update: if isSignedIn() &&
+                       isValidPairId(pairId) &&
+                       request.auth.uid in existing().participantIds &&
+                       incoming().participantIds == existing().participantIds &&
+                       incoming().createdAt == existing().createdAt &&
+                       isValidFriendConnection(pairId, incoming()) &&
+                       (
+                         (
+                           existing().status == 'pending' &&
+                           request.auth.uid == existing().recipientId &&
+                           incoming().status in ['accepted', 'declined'] &&
+                           incoming().requesterId == existing().requesterId &&
+                           incoming().recipientId == existing().recipientId &&
+                           incoming().diff(existing()).affectedKeys().hasOnly(['status', 'recipientName', 'recipientGrade', 'updatedAt'])
+                         ) ||
+                         (
+                           existing().status == 'declined' &&
+                           incoming().status == 'pending' &&
+                           incoming().requesterId == request.auth.uid &&
+                           incoming().diff(existing()).affectedKeys().hasOnly(['requesterId', 'requesterName', 'requesterGrade', 'recipientId', 'recipientName', 'recipientGrade', 'status', 'updatedAt'])
+                         ) ||
+                         (
+                           existing().status == 'accepted' &&
+                           incoming().status == 'accepted' &&
+                           incoming().requesterId == existing().requesterId &&
+                           incoming().recipientId == existing().recipientId &&
+                           incoming().diff(existing()).affectedKeys().hasOnly(['lastMessageText', 'lastSenderName', 'updatedAt'])
+                         )
+                       );
+
+      allow delete: if isSignedIn() && isValidPairId(pairId) && request.auth.uid in existing().participantIds;
+
+      match /messages/{messageId} {
+        allow get: if isSignedIn() &&
+                      isValidPairId(pairId) &&
+                      isValidId(messageId) &&
+                      existing().connectionId == pairId &&
+                      request.auth.uid in existing().participantIds;
+
+        allow list: if isSignedIn() && request.auth.uid in existing().participantIds;
+
+        allow create: if isSignedIn() &&
+                         isValidPairId(pairId) &&
+                         isValidId(messageId) &&
+                         incoming().senderId == request.auth.uid &&
+                         incoming().connectionId == pairId &&
+                         request.auth.uid in incoming().participantIds &&
+                         incoming().keys().hasAll(['connectionId', 'participantIds', 'senderId', 'senderName', 'senderGrade', 'text', 'createdAt']) &&
+                         incoming().keys().hasOnly(['connectionId', 'participantIds', 'senderId', 'senderName', 'senderGrade', 'text', 'attachedLessonTitle', 'attachedLessonType', 'attachedLessonSubject', 'attachedLessonNote', 'createdAt']) &&
+                         isValidDirectMessage(pairId, incoming()) &&
+                         get(/databases/$(database)/documents/friendConnections/$(pairId)).data.status == 'accepted' &&
+                         incoming().participantIds == get(/databases/$(database)/documents/friendConnections/$(pairId)).data.participantIds;
+
+        allow update: if false;
+
+        allow delete: if isSignedIn() &&
+                         isValidPairId(pairId) &&
+                         isValidId(messageId) &&
+                         existing().senderId == request.auth.uid;
+      }
+    }
+
+    match /studyRooms/{roomId} {
+      allow get: if isSignedIn() && isValidId(roomId) && existing().visibility == 'shared';
+      allow list: if isSignedIn() && existing().visibility == 'shared';
+
+      allow create: if isSignedIn() &&
+                       isValidId(roomId) &&
+                       incoming().creatorId == request.auth.uid &&
+                       incoming().keys().hasAll(['creatorId', 'name', 'description', 'subjectTag', 'visibility', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['creatorId', 'name', 'description', 'subjectTag', 'visibility', 'lastMessageText', 'lastSenderName', 'createdAt', 'updatedAt']) &&
+                       isValidStudyRoom(incoming());
+
+      allow update: if isSignedIn() &&
+                       isValidId(roomId) &&
+                       isValidStudyRoom(incoming()) &&
+                       incoming().creatorId == existing().creatorId &&
+                       incoming().visibility == existing().visibility &&
+                       incoming().createdAt == existing().createdAt &&
+                       (
+                         (request.auth.uid == existing().creatorId &&
+                           incoming().diff(existing()).affectedKeys().hasOnly(['name', 'description', 'subjectTag', 'lastMessageText', 'lastSenderName', 'updatedAt'])) ||
+                         (incoming().name == existing().name &&
+                           incoming().description == existing().description &&
+                           incoming().subjectTag == existing().subjectTag &&
+                           incoming().diff(existing()).affectedKeys().hasOnly(['lastMessageText', 'lastSenderName', 'updatedAt']))
+                       );
+
+      allow delete: if isSignedIn() && isValidId(roomId) && existing().creatorId == request.auth.uid;
+
+      match /messages/{messageId} {
+        allow get: if isSignedIn() && isValidId(roomId) && isValidId(messageId) && existing().roomId == roomId;
+        allow list: if isSignedIn() && existing().roomId == roomId;
+
+        allow create: if isSignedIn() &&
+                         isValidId(roomId) &&
+                         isValidId(messageId) &&
+                         incoming().senderId == request.auth.uid &&
+                         incoming().roomId == roomId &&
+                         incoming().keys().hasAll(['roomId', 'senderId', 'senderName', 'senderGrade', 'text', 'createdAt']) &&
+                         incoming().keys().hasOnly(['roomId', 'senderId', 'senderName', 'senderGrade', 'text', 'attachedLessonTitle', 'attachedLessonType', 'attachedLessonSubject', 'attachedLessonNote', 'createdAt']) &&
+                         isValidChatMessage(incoming()) &&
+                         exists(/databases/$(database)/documents/studyRooms/$(roomId));
+
+        allow update: if false;
+
+        allow delete: if isSignedIn() &&
+                         isValidId(roomId) &&
+                         isValidId(messageId) &&
+                         existing().senderId == request.auth.uid;
+      }
+    }
+  }
+}

@@ -1,0 +1,142 @@
+<resources>
+    <string name="app_name">បណ្ដុំឯកសារមេរៀន</string>
+    <string name="nav_library">បណ្ណាល័យ</string>
+    <string name="nav_subjects">មុខវិជ្ជា</string>
+    <string name="nav_pinned">សំខាន់</string>
+
+    <string name="hero_title">ឃ្លាំងឯកសារមេរៀនរបស់អ្នក</string>
+    <string name="hero_subtitle">រក្សាទុក PDF រូបភាព និងកំណត់ត្រាដោយផ្ទាល់ក្នុងកម្មវិធី សិក្សាបានគ្រប់ពេល</string>
+
+    <string name="search_hint">ស្វែងរកមេរៀន ឬកំណត់ត្រា…</string>
+    <string name="filter_all">ទាំងអស់</string>
+    <string name="filter_pdf">PDF</string>
+    <string name="filter_image">រូបភាព</string>
+    <string name="filter_note">កំណត់ត្រា</string>
+    <string name="filter_doc">ឯកសារ</string>
+
+    <string name="action_add_lesson">បន្ថែមមេរៀន</string>
+    <string name="action_import_document">នាំចូលឯកសារ (PDF, TXT, DOC)</string>
+    <string name="action_import_document_desc">ចម្លងឯកសារពីទូរស័ព្ទមករក្សាទុកក្នុងកម្មវិធី</string>
+    <string name="action_import_image">នាំចូលរូបភាពមេរៀន</string>
+    <string name="action_import_image_desc">រូបភាពក្តារខៀន ស្លាយ ឬទំព័រសៀវភៅ</string>
+    <string name="action_create_note">សរសេរកំណត់ត្រាមេរៀន</string>
+    <string name="action_create_note_desc">បង្កើតមេរៀនជាអត្ថបទ ឬសេចក្តីសង្ខេបផ្ទាល់ខ្លួន</string>
+
+    <string name="empty_library_title">មិនទាន់មានឯកសារមេរៀននៅឡើយទេ</string>
+    <string name="empty_library_subtitle">នាំចូលឯកសារ PDF រូបភាពមេរៀន ឬសរសេរកំណត់ត្រាដើម្បីរក្សាទុកក្នុងកម្មវិធី</string>
+    <string name="empty_search_title">រកមិនឃើញមេរៀនដែលត្រូវគ្នាទេ</string>
+    <string name="empty_search_subtitle">សាកល្បងពាក្យគន្លឹះផ្សេង ឬប្តូរប្រភេទតម្រង</string>
+    <string name="empty_pinned_title">មិនទាន់មានមេរៀនសំខាន់ទេ</string>
+    <string name="empty_pinned_subtitle">ចុចរូបម្ជុលលើមេរៀនណាមួយដើម្បីទុកនៅទីនេះសម្រាប់បើកអានរហ័ស</string>
+
+    <string name="stat_lessons">មេរៀន</string>
+    <string name="stat_subjects">មុខវិជ្ជា</string>
+    <string name="stat_storage">ទំហំក្នុងកម្មវិធី</string>
+
+    <string name="add_subject">បង្កើតមុខវិជ្ជាថ្មី</string>
+    <string name="edit_subject">កែប្រែមុខវិជ្ជា</string>
+    <string name="subject_name_label">ឈ្មោះមុខវិជ្ជា</string>
+    <string name="subject_color_label">ពណ៌សម្គាល់</string>
+    <string name="subject_icon_label">និមិត្តសញ្ញា</string>
+    <string name="delete_subject_title">លុបមុខវិជ្ជា?</string>
+    <string name="delete_subject_message">មេរៀននៅក្នុងមុខវិជ្ជានេះនឹងត្រូវផ្លាស់ប្តូរទៅមុខវិជ្ជាទូទៅ ឬលុបចេញតាមជម្រើសរបស់អ្នក។</string>
+
+    <string name="import_dialog_title">រក្សាទុកមេរៀនក្នុងកម្មវិធី</string>
+    <string name="lesson_title_label">ចំណងជើងមេរៀន</string>
+    <string name="lesson_desc_label">ការពិពណ៌នាខ្លី (ស្រេចចិត្ត)</string>
+    <string name="lesson_subject_label">ជ្រើសរើសមុខវិជ្ជា</string>
+    <string name="lesson_note_label">កំណត់ត្រាបន្ថែម (ស្រេចចិត្ត)</string>
+
+    <string name="save">រក្សាទុក</string>
+    <string name="cancel">បោះបង់</string>
+    <string name="delete">លុប</string>
+    <string name="edit">កែសម្រួល</string>
+    <string name="share">ចែករំលែក</string>
+    <string name="open_external">បើកដោយកម្មវិធីផ្សេង</string>
+    <string name="back">ត្រឡប់ក្រោយ</string>
+
+    <string name="delete_lesson_title">លុបឯកសារមេរៀន?</string>
+    <string name="delete_lesson_message">ឯកសារនេះនឹងត្រូវលុបចេញពីឃ្លាំងផ្ទុកក្នុងកម្មវិធីជាអចិន្ត្រៃយ៍។</string>
+    <string name="stored_inside_badge">រក្សាទុកក្នុងកម្មវិធី</string>
+    <string name="study_notes_title">កំណត់ត្រាសិក្សារបស់ខ្ញុំ</string>
+    <string name="study_notes_hint">សរសេរចំណុចសំខាន់ ឬសេចក្តីសង្ខេបសម្រាប់មេរៀននេះ…</string>
+    <string name="note_editor_new_title">កំណត់ត្រាមេរៀនថ្មី</string>
+    <string name="note_editor_edit_title">កែសម្រួលកំណត់ត្រា</string>
+    <string name="note_content_label">ខ្លឹមសារមេរៀន</string>
+    <string name="note_content_hint">សរសេរមេរៀន រូបមន្ត ឬសេចក្តីសង្ខេបនៅទីនេះ…</string>
+
+    <string name="viewer_tab_preview">មើលឯកសារ</string>
+    <string name="viewer_tab_details">ព័ត៌មានលម្អិត</string>
+    <string name="details_metadata_section">ព័ត៌មានលម្អិតឯកសារ</string>
+    <string name="details_created_at">ថ្ងៃបង្កើត</string>
+    <string name="details_updated_at">កែប្រែចុងក្រោយ</string>
+    <string name="details_file_size">ទំហំឯកសារ</string>
+    <string name="details_file_type">ប្រភេទ និងទម្រង់</string>
+    <string name="details_original_name">ឈ្មោះឯកសារដើម</string>
+    <string name="details_category_labels">មុខវិជ្ជា និងស្លាក</string>
+    <string name="details_notes_preview_title">ការមើលកំណត់ត្រាធំ</string>
+    <string name="details_notes_empty">មិនទាន់មានកំណត់ត្រាសម្រាប់ឯកសារនេះនៅឡើយទេ។ ចុច «កែសម្រួល» ដើម្បីបន្ថែមចំណុចសំខាន់។</string>
+    <string name="details_copy_notes">ចម្លងកំណត់ត្រា</string>
+    <string name="details_copied_toast">បានចម្លងកំណត់ត្រា</string>
+
+    <string name="sort_menu_label">តម្រៀបឯកសារ</string>
+    <string name="sort_date_created">ថ្ងៃបង្កើត</string>
+    <string name="sort_name">ឈ្មោះ</string>
+    <string name="sort_category">ប្រភេទ</string>
+
+    <string name="nav_chat">ជជែក</string>
+    <string name="auth_gate_title">ចូលរួមបន្ទប់ជជែកសិក្សា</string>
+    <string name="auth_gate_subtitle">ភ្ជាប់គណនី Google ដើម្បីបង្កើតគណនីសិស្ស (ឈ្មោះ ថ្នាក់ទី និងពាក្យសម្ងាត់) និងជជែកសួរអំពីមេរៀនជាមួយមិត្តភក្តិ</string>
+    <string name="sign_in_with_google">ចូលដោយប្រើ Google</string>
+    <string name="account_setup_title">បង្កើតគណនីសិស្ស</string>
+    <string name="account_edit_title">កែសម្រួលគណនីសិស្ស</string>
+    <string name="account_setup_subtitle">បញ្ចូលឈ្មោះ ថ្នាក់ទីប៉ុន្មាន និងពាក្យសម្ងាត់ផ្ទាល់ខ្លួនដើម្បីចាប់ផ្តើមជជែកសួរពីមេរៀន</string>
+    <string name="account_name_label">ឈ្មោះរបស់អ្នក</string>
+    <string name="account_grade_label">ថ្នាក់ទីប៉ុន្មាន? (ឧ. ថ្នាក់ទី ១២)</string>
+    <string name="account_password_label">ពាក្យសម្ងាត់ (យ៉ាងតិច ៤ ខ្ទង់)</string>
+    <string name="account_create_button">បង្កើតគណនី</string>
+    <string name="account_save_button">រក្សាទុកគណនី</string>
+    <string name="account_unlock_title">ដោះសោគណនីសិស្ស</string>
+    <string name="account_unlock_button">ដោះសោ</string>
+    <string name="account_lock_button">ចាក់សោ</string>
+    <string name="account_sign_out">ចាកចេញ</string>
+    <string name="chat_create_room">បង្កើតបន្ទប់ថ្មី</string>
+    <string name="chat_room_name_label">ឈ្មោះបន្ទប់ជជែក / មេរៀន</string>
+    <string name="chat_room_desc_label">ការពិពណ៌នាប្រធានបទ</string>
+    <string name="chat_message_hint">សរសេរសំណួរ ឬសារជជែកអំពីមេរៀន…</string>
+    <string name="chat_attach_lesson">ភ្ជាប់មេរៀន</string>
+    <string name="chat_ask_in_chat">សួរក្នុងជជែក</string>
+    <string name="chat_send_message">ផ្ញើសារ</string>
+    <string name="sound_toggle_on">បិទសំឡេងពេលចុច</string>
+    <string name="sound_toggle_off">បើកសំឡេងពេលចុច</string>
+    <string name="chat_tab_rooms">បន្ទប់រួម</string>
+    <string name="chat_tab_friends">មិត្តភក្តិ</string>
+    <string name="friends_search_hint">ស្វែងរកឈ្មោះ ឬលេខកូដសិស្ស…</string>
+    <string name="friends_add_button">បន្ថែមមិត្ត</string>
+    <string name="friends_pending_sent">បានផ្ញើសំណើ</string>
+    <string name="friends_accept">យល់ព្រម</string>
+    <string name="friends_decline">បដិសេធ</string>
+    <string name="friends_remove">ដកចេញពីមិត្តភក្តិ</string>
+    <string name="friends_requests_title">សំណើសុំធ្វើមិត្ត</string>
+    <string name="friends_list_title">មិត្តភក្តិរបស់ខ្ញុំ</string>
+    <string name="friends_discover_title">សិស្សផ្សេងទៀត</string>
+    <string name="friends_chat_hint">ជជែក និងសួរមេរៀនជាមួយមិត្តភក្តិ…</string>
+
+    <string name="tags_section_title">ស្លាកឯកសារ (Tags)</string>
+    <string name="tags_section_subtitle">ចុចលើស្លាកដើម្បីត្រងឯកសារ ឬកែឈ្មោះស្លាក (ឧ. Math, Science, Personal)</string>
+    <string name="tags_empty_hint">មិនទាន់មានស្លាកលើឯកសារនៅឡើយទេ។ ចុច «+ ស្លាក» លើឯកសារណាមួយដើម្បីដាក់ស្លាកដូចជា Math, Science ឬ Personal។</string>
+    <string name="rename_tag_title">កែឈ្មោះស្លាក</string>
+    <string name="rename_tag_label">ឈ្មោះស្លាកថ្មី</string>
+    <string name="delete_tag_title">លុបស្លាក?</string>
+    <string name="delete_tag_message">ស្លាកនេះនឹងត្រូវដកចេញពីឯកសារមេរៀនទាំងអស់ (ឯកសារមិនត្រូវបានលុបទេ)។</string>
+    <string name="quick_add_tag">+ ស្លាក</string>
+
+    <string name="friends_create_group_button">បង្កើតគ្រុបសិក្សា</string>
+    <string name="voice_record_button">ថតសំឡេងសួរមេរៀន</string>
+    <string name="voice_play_button">សារសំឡេង</string>
+    <string name="voice_pause_button">ផ្អាកសំឡេង</string>
+    <string name="voice_cancel_button">បោះបង់ការថតសំឡេង</string>
+    <string name="voice_recording_status">កំពុងថតសំឡេង…</string>
+    <string name="voice_send_button">ផ្ញើសារសំឡេង</string>
+    <string name="voice_permission_denied">សូមអនុញ្ញាតសិទ្ធិមីក្រូហ្វូនដើម្បីថតសំឡេងសួរមេរៀន</string>
+</resources>
